@@ -16,16 +16,18 @@ import java.util.List;
 public class Patient {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     private String resourceType = "Patient";
 
     private String gender;
     private String birthDate;
 
+    //is this the best thing to use here?
     @ElementCollection
     @CollectionTable(name = "patient_names", joinColumns = @JoinColumn(name = "patient_id"))
-    private List<HumanName> names = new ArrayList<>();
+    private List<HumanName> name = new ArrayList<>();
 
     @ElementCollection
     @CollectionTable(name = "patient_telecom", joinColumns = @JoinColumn(name = "patient_id"))
@@ -33,5 +35,5 @@ public class Patient {
 
     @ElementCollection
     @CollectionTable(name = "patient_addresses", joinColumns = @JoinColumn(name = "patient_id"))
-    private List<Address> addresses = new ArrayList<>();
+    private List<Address> address = new ArrayList<>();
 }
