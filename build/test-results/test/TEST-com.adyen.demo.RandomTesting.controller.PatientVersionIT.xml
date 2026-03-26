@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.adyen.demo.RandomTesting.controller.PatientVersionIT" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-03-24T15:08:28.492Z" hostname="Mac" time="0.034">
+  <properties/>
+  <testcase name="addName_incrementsVersion()" classname="com.adyen.demo.RandomTesting.controller.PatientVersionIT" time="0.008"/>
+  <testcase name="getPatient_afterPatch_returnsIncrementedVersion()" classname="com.adyen.demo.RandomTesting.controller.PatientVersionIT" time="0.008"/>
+  <testcase name="patchPatient_versionIncrementsAfterUpdate()" classname="com.adyen.demo.RandomTesting.controller.PatientVersionIT" time="0.006"/>
+  <testcase name="getAllPatients_responseExposesVersionField()" classname="com.adyen.demo.RandomTesting.controller.PatientVersionIT" time="0.005"/>
+  <testcase name="createPatient_responseExposesVersionField()" classname="com.adyen.demo.RandomTesting.controller.PatientVersionIT" time="0.003"/>
+  <system-out><![CDATA[2026-03-24T16:08:28.493+01:00  INFO 63264 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.adyen.demo.RandomTesting.controller.PatientVersionIT]: PatientVersionIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-24T16:08:28.493+01:00  INFO 63264 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.adyen.demo.DemoApplication for test class com.adyen.demo.RandomTesting.controller.PatientVersionIT
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

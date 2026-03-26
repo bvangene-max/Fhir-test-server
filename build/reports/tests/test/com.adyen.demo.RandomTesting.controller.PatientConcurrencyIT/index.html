@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<meta http-equiv="x-ua-compatible" content="IE=edge"/>
+<title>Test results - com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT</title>
+<link href="../css/base-style.css" rel="stylesheet" type="text/css"/>
+<link href="../css/style.css" rel="stylesheet" type="text/css"/>
+<script src="../js/report.js" type="text/javascript"></script>
+</head>
+<body>
+<div id="content">
+<div class="breadcrumbs">
+<a class="breadcrumb" href="../index.html">all</a> &gt; 
+<span class="breadcrumb">com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT</span>
+</div>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a class="successGroup" href="#">Gradle Test Run :test</a>
+</li>
+</ul>
+<div class="tab">
+<h2>Gradle Test Run :test</h2>
+<h1>PatientConcurrencyIT</h1>
+<div class="tab-container">
+<ul class="tabLinks">
+<li>
+<a class="" href="#">summary</a>
+</li>
+<li>
+<a class="" href="#">standard output</a>
+</li>
+</ul>
+<div class="tab">
+<h2>summary</h2>
+<div>
+<div class="summary">
+<table>
+<tr>
+<td>
+<div class="summaryGroup">
+<table>
+<tr>
+<td>
+<div class="infoBox">
+<div class="counter">6</div>
+<p>tests</p>
+</div>
+</td>
+<td>
+<div class="infoBox">
+<div class="counter">0</div>
+<p>failures</p>
+</div>
+</td>
+<td>
+<div class="infoBox">
+<div class="counter">0</div>
+<p>skipped</p>
+</div>
+</td>
+<td>
+<div class="infoBox duration">
+<div class="counter">9.106s</div>
+<p>duration</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+</td>
+<td>
+<div class="infoBox success successRate">
+<div class="percent">100%</div>
+<p>successful</p>
+</div>
+</td>
+</tr>
+</table>
+</div>
+<table class="test-results">
+<thead>
+<tr>
+<th>Child</th>
+<th hidden="">Name</th>
+<th>Tests</th>
+<th>Failures</th>
+<th>Skipped</th>
+<th>Duration</th>
+<th>Success rate</th>
+</tr>
+</thead>
+<tr>
+<td class="success">
+<a href="addName_concurrent_returnsConflictOrOk().html">addName_concurrent_returnsConflictOrOk()</a>
+</td>
+<td class="path" hidden="">addName_concurrent_returnsConflictOrOk()</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>4.074s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="createPatient_concurrentIndependentCreates_allSucceed().html">createPatient_concurrentIndependentCreates_allSucceed()</a>
+</td>
+<td class="path" hidden="">createPatient_concurrentIndependentCreates_allSucceed()</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0.017s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="deleteAndPatch_concurrent_finalStateIsConsistent().html">deleteAndPatch_concurrent_finalStateIsConsistent()</a>
+</td>
+<td class="path" hidden="">deleteAndPatch_concurrent_finalStateIsConsistent()</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0.241s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="patchPatient_concurrent_returnsConflictOrOk().html">patchPatient_concurrent_returnsConflictOrOk()</a>
+</td>
+<td class="path" hidden="">patchPatient_concurrent_returnsConflictOrOk()</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0.021s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="removeName_concurrent_returnsConflictOrNotFoundOrOk().html">removeName_concurrent_returnsConflictOrNotFoundOrOk()</a>
+</td>
+<td class="path" hidden="">removeName_concurrent_returnsConflictOrNotFoundOrOk()</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>4.078s</td>
+<td class="success">100%</td>
+</tr>
+<tr>
+<td class="success">
+<a href="syncPatient_concurrentSameFhirId_createsOnlyOneRow().html">syncPatient_concurrentSameFhirId_createsOnlyOneRow()</a>
+</td>
+<td class="path" hidden="">syncPatient_concurrentSameFhirId_createsOnlyOneRow()</td>
+<td>1</td>
+<td>0</td>
+<td>0</td>
+<td>0.235s</td>
+<td class="success">100%</td>
+</tr>
+</table>
+</div>
+</div>
+<div class="tab">
+<h2>standard output</h2>
+<span class="code">
+<pre id="root-0-test-stdout-com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT">2026-03-24T16:08:18.850+01:00  INFO 63264 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT]: PatientConcurrencyIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-24T16:08:18.855+01:00  INFO 63264 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.adyen.demo.DemoApplication for test class com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.3)
+
+2026-03-24T16:08:18.892+01:00  INFO 63264 --- [    Test worker] c.a.d.R.controller.PatientConcurrencyIT  : Starting PatientConcurrencyIT using Java 21.0.8 with PID 63264 (started by bvangene in /Users/bvangene/Documents/project_fhir_server)
+2026-03-24T16:08:18.892+01:00  INFO 63264 --- [    Test worker] c.a.d.R.controller.PatientConcurrencyIT  : No active profile set, falling back to 1 default profile: &quot;default&quot;
+2026-03-24T16:08:18.926+01:00  INFO 63264 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-24T16:08:18.929+01:00  INFO 63264 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 2 ms. Found 1 JPA repository interface.
+2026-03-24T16:08:19.095+01:00  INFO 63264 --- [    Test worker] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 0 (http)
+2026-03-24T16:08:19.101+01:00  INFO 63264 --- [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-24T16:08:19.101+01:00  INFO 63264 --- [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-03-24T16:08:19.121+01:00  INFO 63264 --- [    Test worker] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 229 ms
+2026-03-24T16:08:19.165+01:00  INFO 63264 --- [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-24T16:08:19.175+01:00  INFO 63264 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-24T16:08:19.175+01:00  INFO 63264 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-03-24T16:08:19.176+01:00  INFO 63264 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:testdb user=SA
+2026-03-24T16:08:19.176+01:00  INFO 63264 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-03-24T16:08:19.176+01:00  INFO 63264 --- [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:testdb]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: TESTDB/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-24T16:08:19.194+01:00  INFO 63264 --- [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: drop table if exists internal_patient cascade 
+Hibernate: drop table if exists patient_addresses cascade 
+Hibernate: drop table if exists patient_names cascade 
+Hibernate: drop table if exists patient_phone_numbers cascade 
+Hibernate: create table internal_patient (age integer not null check ((age&lt;=150) and (age&gt;=0)), id bigint generated by default as identity, version bigint not null, fhir_id varchar(255) unique, name varchar(255), primary key (id))
+Hibernate: create table patient_addresses (patient_id bigint not null, city varchar(255), country varchar(255), line varchar(255), postal_code varchar(255), use varchar(255))
+Hibernate: create table patient_names (patient_id bigint not null, family varchar(255), given varchar(255), use varchar(255))
+Hibernate: create table patient_phone_numbers (patient_id bigint not null, phone_value varchar(255), system varchar(255), use varchar(255))
+Hibernate: alter table if exists patient_addresses add constraint FKsu2ilbxtnvouda3empaaswgfr foreign key (patient_id) references internal_patient
+Hibernate: alter table if exists patient_names add constraint FKacfse78lwmcrqgnv1tq95qa7 foreign key (patient_id) references internal_patient
+Hibernate: alter table if exists patient_phone_numbers add constraint FKp9hp6cuarc6rnw7vvid5qhi0n foreign key (patient_id) references internal_patient
+2026-03-24T16:08:19.199+01:00  INFO 63264 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-24T16:08:19.230+01:00  INFO 63264 --- [    Test worker] ca.uhn.fhir.context.FhirContext          : Creating new FHIR context for FHIR version [R4]
+2026-03-24T16:08:19.236+01:00  WARN 63264 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-24T16:08:19.279+01:00  INFO 63264 --- [    Test worker] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 61278 (http) with context path '/'
+2026-03-24T16:08:19.280+01:00  INFO 63264 --- [    Test worker] c.a.d.R.controller.PatientConcurrencyIT  : Started PatientConcurrencyIT in 0.397 seconds (process running for 2.4)
+</pre>
+<button class="clipboard-copy-btn" aria-label="Copy to clipboard" data-copy-element-id="root-0-test-stdout-com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT">Copy</button>
+</span>
+</div>
+</div>
+</div>
+</div>
+<div id="footer">
+<p>
+<div>
+<label class="hidden" id="label-for-line-wrapping-toggle" for="line-wrapping-toggle">Wrap lines
+<input id="line-wrapping-toggle" type="checkbox" autocomplete="off"/>
+</label>
+</div>Generated by 
+<a href="https://www.gradle.org">Gradle 9.3.1</a> at Mar 24, 2026, 4:08:28 PM</p>
+</div>
+</div>
+</body>
+</html>

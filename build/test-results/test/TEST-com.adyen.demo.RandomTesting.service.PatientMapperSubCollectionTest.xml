@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.adyen.demo.RandomTesting.service.PatientMapperSubCollectionTest" tests="8" skipped="0" failures="0" errors="0" timestamp="2026-03-24T15:08:28.642Z" hostname="Mac" time="0.001">
+  <properties/>
+  <testcase name="toPatientEntity_addressWithNoLines_lineIsNull()" classname="com.adyen.demo.RandomTesting.service.PatientMapperSubCollectionTest" time="0.0"/>
+  <testcase name="toPatientEntity_nullTelecomSystemAndUse_fieldsAreNull()" classname="com.adyen.demo.RandomTesting.service.PatientMapperSubCollectionTest" time="0.0"/>
+  <testcase name="toPatientEntity_emailTelecom_systemMappedCorrectly()" classname="com.adyen.demo.RandomTesting.service.PatientMapperSubCollectionTest" time="0.001"/>
+  <testcase name="toPatientEntity_withExistingEntity_clearsAndReplacesCollections()" classname="com.adyen.demo.RandomTesting.service.PatientMapperSubCollectionTest" time="0.0"/>
+  <testcase name="toPatientEntity_address_allFieldsMapped()" classname="com.adyen.demo.RandomTesting.service.PatientMapperSubCollectionTest" time="0.0"/>
+  <testcase name="toPatientEntity_phoneTelecom_allFieldsMapped()" classname="com.adyen.demo.RandomTesting.service.PatientMapperSubCollectionTest" time="0.0"/>
+  <testcase name="toPatientEntity_nullAddressUse_useIsNull()" classname="com.adyen.demo.RandomTesting.service.PatientMapperSubCollectionTest" time="0.0"/>
+  <testcase name="toPatientEntity_multipleNamesAddressesAndPhones_allMapped()" classname="com.adyen.demo.RandomTesting.service.PatientMapperSubCollectionTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.adyen.demo.RandomTesting.controller.PatientValidationIT" tests="23" skipped="0" failures="0" errors="0" timestamp="2026-03-24T15:08:28.359Z" hostname="Mac" time="0.133">
+  <properties/>
+  <testcase name="patchPatient_withEmptyBody_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.007"/>
+  <testcase name="createPatient_withNegativeAge_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.005"/>
+  <testcase name="createPatient_withDecimalAge_truncatesToInt()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.007"/>
+  <testcase name="patchPatient_withStringAge_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.01"/>
+  <testcase name="createPatient_withUnknownFieldInsideName_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.005"/>
+  <testcase name="createPatient_withMalformedJson_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.003"/>
+  <testcase name="createPatient_withUnknownField_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.004"/>
+  <testcase name="patchPatient_withNegativeAge_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.008"/>
+  <testcase name="createPatient_withAgeZero_succeeds()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.005"/>
+  <testcase name="patchPatient_withUnknownField_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.007"/>
+  <testcase name="createPatient_withAge150_succeeds()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.004"/>
+  <testcase name="createPatient_withAge151_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.005"/>
+  <testcase name="createPatient_withEmptyBody_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.003"/>
+  <testcase name="patchPatient_withMalformedJson_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.005"/>
+  <testcase name="createPatient_withIdInBody_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.004"/>
+  <testcase name="createPatient_withInvalidNestedFieldType_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.004"/>
+  <testcase name="createPatient_withOnlyAge_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.003"/>
+  <testcase name="createPatient_withMissingAge_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.003"/>
+  <testcase name="createPatient_withStringAge_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.003"/>
+  <testcase name="patchPatient_withUnknownFieldInsideAddress_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.006"/>
+  <testcase name="createPatient_withOnlyNameAndAge_succeeds()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.004"/>
+  <testcase name="patchPatient_withAgeAbove150_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.006"/>
+  <testcase name="createPatient_withBlankName_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientValidationIT" time="0.004"/>
+  <system-out><![CDATA[2026-03-24T16:08:28.361+01:00  INFO 63264 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.adyen.demo.RandomTesting.controller.PatientValidationIT]: PatientValidationIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-24T16:08:28.361+01:00  INFO 63264 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.adyen.demo.DemoApplication for test class com.adyen.demo.RandomTesting.controller.PatientValidationIT
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+2026-03-24T16:08:28.368+01:00  WARN 63264 --- [o-auto-1-exec-4] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public com.adyen.demo.RandomTesting.entity.InternalPatient com.adyen.demo.RandomTesting.controller.PatientController.patchPatient(long,java.util.Map<java.lang.String, java.lang.Object>)]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+2026-03-24T16:08:28.374+01:00  WARN 63264 --- [o-auto-1-exec-5] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public com.adyen.demo.RandomTesting.entity.InternalPatient com.adyen.demo.RandomTesting.controller.PatientController.createPatient(com.adyen.demo.RandomTesting.dto.PatientRequest): [Field error in object 'patientRequest' on field 'age': rejected value [-1]; codes [Min.patientRequest.age,Min.age,Min.java.lang.Integer,Min]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [patientRequest.age,age]; arguments []; default message [age],0]; default message [must be greater than or equal to 0]] ]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+2026-03-24T16:08:28.400+01:00  WARN 63264 --- [o-auto-1-exec-8] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unrecognized property "unknownField" (class com.adyen.demo.RandomTesting.entity.patientSubclass.Name), not marked as ignorable]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+2026-03-24T16:08:28.404+01:00  WARN 63264 --- [-auto-1-exec-12] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unexpected end-of-input: expected close marker for Object (start marker at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); byte offset: #UNKNOWN])]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+2026-03-24T16:08:28.409+01:00  WARN 63264 --- [o-auto-1-exec-9] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unrecognized property "unknownField" (class com.adyen.demo.RandomTesting.dto.PatientRequest), not marked as ignorable]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+2026-03-24T16:08:28.440+01:00  WARN 63264 --- [o-auto-1-exec-4] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public com.adyen.demo.RandomTesting.entity.InternalPatient com.adyen.demo.RandomTesting.controller.PatientController.createPatient(com.adyen.demo.RandomTesting.dto.PatientRequest): [Field error in object 'patientRequest' on field 'age': rejected value [151]; codes [Max.patientRequest.age,Max.age,Max.java.lang.Integer,Max]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [patientRequest.age,age]; arguments []; default message [age],150]; default message [must be less than or equal to 150]] ]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+2026-03-24T16:08:28.444+01:00  WARN 63264 --- [o-auto-1-exec-5] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: Required request body is missing: public com.adyen.demo.RandomTesting.entity.InternalPatient com.adyen.demo.RandomTesting.controller.PatientController.createPatient(com.adyen.demo.RandomTesting.dto.PatientRequest)]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+2026-03-24T16:08:28.450+01:00  WARN 63264 --- [-auto-1-exec-13] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unexpected end-of-input: expected close marker for Object (start marker at [Source: REDACTED (`StreamReadFeature.INCLUDE_SOURCE_IN_LOCATION` disabled); byte offset: #UNKNOWN])]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+2026-03-24T16:08:28.455+01:00  WARN 63264 --- [o-auto-1-exec-2] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Unrecognized property "id" (class com.adyen.demo.RandomTesting.dto.PatientRequest), not marked as ignorable]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+2026-03-24T16:08:28.459+01:00  WARN 63264 --- [o-auto-1-exec-8] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `java.lang.String` from Array value (token `JsonToken.START_ARRAY`)]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+2026-03-24T16:08:28.463+01:00  WARN 63264 --- [-auto-1-exec-12] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public com.adyen.demo.RandomTesting.entity.InternalPatient com.adyen.demo.RandomTesting.controller.PatientController.createPatient(com.adyen.demo.RandomTesting.dto.PatientRequest): [Field error in object 'patientRequest' on field 'name': rejected value [null]; codes [NotBlank.patientRequest.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [patientRequest.name,name]; arguments []; default message [name]]; default message [must not be blank]] ]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+2026-03-24T16:08:28.466+01:00  WARN 63264 --- [o-auto-1-exec-9] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public com.adyen.demo.RandomTesting.entity.InternalPatient com.adyen.demo.RandomTesting.controller.PatientController.createPatient(com.adyen.demo.RandomTesting.dto.PatientRequest): [Field error in object 'patientRequest' on field 'age': rejected value [null]; codes [NotNull.patientRequest.age,NotNull.age,NotNull.java.lang.Integer,NotNull]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [patientRequest.age,age]; arguments []; default message [age]]; default message [must not be null]] ]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+2026-03-24T16:08:28.470+01:00  WARN 63264 --- [o-auto-1-exec-1] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.http.converter.HttpMessageNotReadableException: JSON parse error: Cannot deserialize value of type `java.lang.Integer` from String "abc": not a valid `java.lang.Integer` value]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+2026-03-24T16:08:28.492+01:00  WARN 63264 --- [o-auto-1-exec-4] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public com.adyen.demo.RandomTesting.entity.InternalPatient com.adyen.demo.RandomTesting.controller.PatientController.createPatient(com.adyen.demo.RandomTesting.dto.PatientRequest): [Field error in object 'patientRequest' on field 'name': rejected value []; codes [NotBlank.patientRequest.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [patientRequest.name,name]; arguments []; default message [name]]; default message [must not be blank]] ]
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

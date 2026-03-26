@@ -1,0 +1,814 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-03-24T15:08:18.849Z" hostname="Mac" time="9.105">
+  <properties/>
+  <testcase name="deleteAndPatch_concurrent_finalStateIsConsistent()" classname="com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT" time="0.241"/>
+  <testcase name="syncPatient_concurrentSameFhirId_createsOnlyOneRow()" classname="com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT" time="0.235"/>
+  <testcase name="addName_concurrent_returnsConflictOrOk()" classname="com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT" time="4.074"/>
+  <testcase name="patchPatient_concurrent_returnsConflictOrOk()" classname="com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT" time="0.021"/>
+  <testcase name="createPatient_concurrentIndependentCreates_allSucceed()" classname="com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT" time="0.017"/>
+  <testcase name="removeName_concurrent_returnsConflictOrNotFoundOrOk()" classname="com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT" time="4.078"/>
+  <system-out><![CDATA[2026-03-24T16:08:18.850+01:00  INFO 63264 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT]: PatientConcurrencyIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-24T16:08:18.855+01:00  INFO 63264 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.adyen.demo.DemoApplication for test class com.adyen.demo.RandomTesting.controller.PatientConcurrencyIT
+
+  .   ____          _            __ _ _
+ /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
+( ( )\___ | '_ | '_| | '_ \/ _` | \ \ \ \
+ \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
+  '  |____| .__|_| |_|_| |_\__, | / / / /
+ =========|_|==============|___/=/_/_/_/
+
+ :: Spring Boot ::                (v4.0.3)
+
+2026-03-24T16:08:18.892+01:00  INFO 63264 --- [    Test worker] c.a.d.R.controller.PatientConcurrencyIT  : Starting PatientConcurrencyIT using Java 21.0.8 with PID 63264 (started by bvangene in /Users/bvangene/Documents/project_fhir_server)
+2026-03-24T16:08:18.892+01:00  INFO 63264 --- [    Test worker] c.a.d.R.controller.PatientConcurrencyIT  : No active profile set, falling back to 1 default profile: "default"
+2026-03-24T16:08:18.926+01:00  INFO 63264 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-03-24T16:08:18.929+01:00  INFO 63264 --- [    Test worker] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 2 ms. Found 1 JPA repository interface.
+2026-03-24T16:08:19.095+01:00  INFO 63264 --- [    Test worker] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 0 (http)
+2026-03-24T16:08:19.101+01:00  INFO 63264 --- [    Test worker] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-03-24T16:08:19.101+01:00  INFO 63264 --- [    Test worker] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-03-24T16:08:19.121+01:00  INFO 63264 --- [    Test worker] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 229 ms
+2026-03-24T16:08:19.165+01:00  INFO 63264 --- [    Test worker] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-03-24T16:08:19.175+01:00  INFO 63264 --- [    Test worker] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-03-24T16:08:19.175+01:00  INFO 63264 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Starting...
+2026-03-24T16:08:19.176+01:00  INFO 63264 --- [    Test worker] com.zaxxer.hikari.pool.HikariPool        : HikariPool-2 - Added connection conn10: url=jdbc:h2:mem:testdb user=SA
+2026-03-24T16:08:19.176+01:00  INFO 63264 --- [    Test worker] com.zaxxer.hikari.HikariDataSource       : HikariPool-2 - Start completed.
+2026-03-24T16:08:19.176+01:00  INFO 63264 --- [    Test worker] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:h2:mem:testdb]
+	Database driver: H2 JDBC Driver
+	Database dialect: H2Dialect
+	Database version: 2.4.240
+	Default catalog/schema: TESTDB/PUBLIC
+	Autocommit mode: undefined/unknown
+	Isolation level: READ_COMMITTED [default READ_COMMITTED]
+	JDBC fetch size: 100
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-03-24T16:08:19.194+01:00  INFO 63264 --- [    Test worker] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+Hibernate: drop table if exists internal_patient cascade 
+Hibernate: drop table if exists patient_addresses cascade 
+Hibernate: drop table if exists patient_names cascade 
+Hibernate: drop table if exists patient_phone_numbers cascade 
+Hibernate: create table internal_patient (age integer not null check ((age<=150) and (age>=0)), id bigint generated by default as identity, version bigint not null, fhir_id varchar(255) unique, name varchar(255), primary key (id))
+Hibernate: create table patient_addresses (patient_id bigint not null, city varchar(255), country varchar(255), line varchar(255), postal_code varchar(255), use varchar(255))
+Hibernate: create table patient_names (patient_id bigint not null, family varchar(255), given varchar(255), use varchar(255))
+Hibernate: create table patient_phone_numbers (patient_id bigint not null, phone_value varchar(255), system varchar(255), use varchar(255))
+Hibernate: alter table if exists patient_addresses add constraint FKsu2ilbxtnvouda3empaaswgfr foreign key (patient_id) references internal_patient
+Hibernate: alter table if exists patient_names add constraint FKacfse78lwmcrqgnv1tq95qa7 foreign key (patient_id) references internal_patient
+Hibernate: alter table if exists patient_phone_numbers add constraint FKp9hp6cuarc6rnw7vvid5qhi0n foreign key (patient_id) references internal_patient
+2026-03-24T16:08:19.199+01:00  INFO 63264 --- [    Test worker] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-03-24T16:08:19.230+01:00  INFO 63264 --- [    Test worker] ca.uhn.fhir.context.FhirContext          : Creating new FHIR context for FHIR version [R4]
+2026-03-24T16:08:19.236+01:00  WARN 63264 --- [    Test worker] JpaBaseConfiguration$JpaWebConfiguration : spring.jpa.open-in-view is enabled by default. Therefore, database queries may be performed during view rendering. Explicitly configure spring.jpa.open-in-view to disable this warning
+2026-03-24T16:08:19.279+01:00  INFO 63264 --- [    Test worker] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 61278 (http) with context path '/'
+2026-03-24T16:08:19.280+01:00  INFO 63264 --- [    Test worker] c.a.d.R.controller.PatientConcurrencyIT  : Started PatientConcurrencyIT in 0.397 seconds (process running for 2.4)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+2026-03-24T16:08:19.402+01:00  INFO 63264 --- [o-auto-1-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-03-24T16:08:19.402+01:00  INFO 63264 --- [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-03-24T16:08:19.403+01:00  INFO 63264 --- [o-auto-1-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.fhir_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.fhir_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.fhir_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.fhir_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.fhir_id=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+2026-03-24T16:08:19.750+01:00  WARN 63264 --- [o-auto-1-exec-4] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 23505, SQLState: 23505
+2026-03-24T16:08:19.750+01:00  WARN 63264 --- [o-auto-1-exec-8] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 23505, SQLState: 23505
+2026-03-24T16:08:19.750+01:00  WARN 63264 --- [o-auto-1-exec-5] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 23505, SQLState: 23505
+2026-03-24T16:08:19.750+01:00  WARN 63264 --- [o-auto-1-exec-6] org.hibernate.orm.jdbc.error             : HHH000247: ErrorCode: 23505, SQLState: 23505
+2026-03-24T16:08:19.750+01:00  WARN 63264 --- [o-auto-1-exec-4] org.hibernate.orm.jdbc.error             : Unique index or primary key violation: "PUBLIC.CONSTRAINT_81 INDEX PUBLIC.CONSTRAINT_INDEX_8 ON PUBLIC.INTERNAL_PATIENT(FHIR_ID NULLS FIRST) VALUES ( /* 4 */ 'fhir-concurrent' )"; SQL statement:
+insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default) [23505-240]
+2026-03-24T16:08:19.750+01:00  WARN 63264 --- [o-auto-1-exec-8] org.hibernate.orm.jdbc.error             : Unique index or primary key violation: "PUBLIC.CONSTRAINT_81 INDEX PUBLIC.CONSTRAINT_INDEX_8 ON PUBLIC.INTERNAL_PATIENT(FHIR_ID NULLS FIRST) VALUES ( /* 4 */ 'fhir-concurrent' )"; SQL statement:
+insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default) [23505-240]
+2026-03-24T16:08:19.750+01:00  WARN 63264 --- [o-auto-1-exec-5] org.hibernate.orm.jdbc.error             : Unique index or primary key violation: "PUBLIC.CONSTRAINT_81 INDEX PUBLIC.CONSTRAINT_INDEX_8 ON PUBLIC.INTERNAL_PATIENT(FHIR_ID NULLS FIRST) VALUES ( /* 4 */ 'fhir-concurrent' )"; SQL statement:
+insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default) [23505-240]
+2026-03-24T16:08:19.750+01:00  WARN 63264 --- [o-auto-1-exec-6] org.hibernate.orm.jdbc.error             : Unique index or primary key violation: "PUBLIC.CONSTRAINT_81 INDEX PUBLIC.CONSTRAINT_INDEX_8 ON PUBLIC.INTERNAL_PATIENT(FHIR_ID NULLS FIRST) VALUES ( /* 4 */ 'fhir-concurrent' )"; SQL statement:
+insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default) [23505-240]
+2026-03-24T16:08:19.751+01:00 ERROR 63264 --- [o-auto-1-exec-4] org.hibernate.orm.core                   : HHH000099: an assertion failure occurred (this may indicate a bug in Hibernate, but is more likely due to unsafe use of the session): org.hibernate.AssertionFailure: Entry for instance of 'com.adyen.demo.RandomTesting.entity.InternalPatient' has a null identifier (this can happen if the session is flushed after an exception occurs)
+2026-03-24T16:08:19.751+01:00 ERROR 63264 --- [o-auto-1-exec-8] org.hibernate.orm.core                   : HHH000099: an assertion failure occurred (this may indicate a bug in Hibernate, but is more likely due to unsafe use of the session): org.hibernate.AssertionFailure: Entry for instance of 'com.adyen.demo.RandomTesting.entity.InternalPatient' has a null identifier (this can happen if the session is flushed after an exception occurs)
+2026-03-24T16:08:19.751+01:00 ERROR 63264 --- [o-auto-1-exec-6] org.hibernate.orm.core                   : HHH000099: an assertion failure occurred (this may indicate a bug in Hibernate, but is more likely due to unsafe use of the session): org.hibernate.AssertionFailure: Entry for instance of 'com.adyen.demo.RandomTesting.entity.InternalPatient' has a null identifier (this can happen if the session is flushed after an exception occurs)
+2026-03-24T16:08:19.751+01:00 ERROR 63264 --- [o-auto-1-exec-5] org.hibernate.orm.core                   : HHH000099: an assertion failure occurred (this may indicate a bug in Hibernate, but is more likely due to unsafe use of the session): org.hibernate.AssertionFailure: Entry for instance of 'com.adyen.demo.RandomTesting.entity.InternalPatient' has a null identifier (this can happen if the session is flushed after an exception occurs)
+2026-03-24T16:08:19.752+01:00 ERROR 63264 --- [o-auto-1-exec-5] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.hibernate.AssertionFailure: Entry for instance of 'com.adyen.demo.RandomTesting.entity.InternalPatient' has a null identifier (this can happen if the session is flushed after an exception occurs)] with root cause
+
+org.hibernate.AssertionFailure: Entry for instance of 'com.adyen.demo.RandomTesting.entity.InternalPatient' has a null identifier (this can happen if the session is flushed after an exception occurs)
+	at org.hibernate.event.internal.DefaultFlushEntityEventListener.checkId(DefaultFlushEntityEventListener.java:69) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.DefaultFlushEntityEventListener.getValues(DefaultFlushEntityEventListener.java:172) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.DefaultFlushEntityEventListener.onFlushEntity(DefaultFlushEntityEventListener.java:131) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:138) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.AbstractFlushingEventListener.flushEntities(AbstractFlushingEventListener.java:229) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.AbstractFlushingEventListener.flushEverythingToExecutions(AbstractFlushingEventListener.java:69) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.DefaultAutoFlushEventListener.onAutoFlush(DefaultAutoFlushEventListener.java:47) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:138) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionImpl.autoFlushIfRequired(SessionImpl.java:1440) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:126) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:427) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:355) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.SqmQueryImpl.doList(SqmQueryImpl.java:374) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:153) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResultOrNull(AbstractSelectionQuery.java:330) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:328) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:99) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:164) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:154) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:169) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:167) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:146) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:135) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:137) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:222) ~[spring-aop-7.0.5.jar:7.0.5]
+	at jdk.proxy3/jdk.proxy3.$Proxy164.findByFhirId(Unknown Source) ~[na:na]
+	at com.adyen.demo.RandomTesting.service.PatientService.syncPatientFromFhir(PatientService.java:115) ~[main/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.retry.annotation.AnnotationAwareRetryOperationsInterceptor.invoke(AnnotationAwareRetryOperationsInterceptor.java:165) ~[spring-retry-2.0.11.jar:na]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719) ~[spring-aop-7.0.5.jar:7.0.5]
+	at com.adyen.demo.RandomTesting.service.PatientService$$SpringCGLIB$$0.syncPatientFromFhir(<generated>) ~[main/:na]
+	at com.adyen.demo.RandomTesting.controller.PatientController.syncPatient(PatientController.java:61) ~[main/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:903) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649) ~[tomcat-embed-core-11.0.18.jar:6.1]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710) ~[tomcat-embed-core-11.0.18.jar:6.1]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1779) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2026-03-24T16:08:19.752+01:00 ERROR 63264 --- [o-auto-1-exec-8] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.hibernate.AssertionFailure: Entry for instance of 'com.adyen.demo.RandomTesting.entity.InternalPatient' has a null identifier (this can happen if the session is flushed after an exception occurs)] with root cause
+
+org.hibernate.AssertionFailure: Entry for instance of 'com.adyen.demo.RandomTesting.entity.InternalPatient' has a null identifier (this can happen if the session is flushed after an exception occurs)
+	at org.hibernate.event.internal.DefaultFlushEntityEventListener.checkId(DefaultFlushEntityEventListener.java:69) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.DefaultFlushEntityEventListener.getValues(DefaultFlushEntityEventListener.java:172) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.DefaultFlushEntityEventListener.onFlushEntity(DefaultFlushEntityEventListener.java:131) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:138) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.AbstractFlushingEventListener.flushEntities(AbstractFlushingEventListener.java:229) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.AbstractFlushingEventListener.flushEverythingToExecutions(AbstractFlushingEventListener.java:69) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.DefaultAutoFlushEventListener.onAutoFlush(DefaultAutoFlushEventListener.java:47) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:138) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionImpl.autoFlushIfRequired(SessionImpl.java:1440) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:126) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:427) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:355) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.SqmQueryImpl.doList(SqmQueryImpl.java:374) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:153) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResultOrNull(AbstractSelectionQuery.java:330) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:328) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:99) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:164) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:154) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:169) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:167) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:146) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:135) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:137) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:222) ~[spring-aop-7.0.5.jar:7.0.5]
+	at jdk.proxy3/jdk.proxy3.$Proxy164.findByFhirId(Unknown Source) ~[na:na]
+	at com.adyen.demo.RandomTesting.service.PatientService.syncPatientFromFhir(PatientService.java:115) ~[main/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.retry.annotation.AnnotationAwareRetryOperationsInterceptor.invoke(AnnotationAwareRetryOperationsInterceptor.java:165) ~[spring-retry-2.0.11.jar:na]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719) ~[spring-aop-7.0.5.jar:7.0.5]
+	at com.adyen.demo.RandomTesting.service.PatientService$$SpringCGLIB$$0.syncPatientFromFhir(<generated>) ~[main/:na]
+	at com.adyen.demo.RandomTesting.controller.PatientController.syncPatient(PatientController.java:61) ~[main/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:903) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649) ~[tomcat-embed-core-11.0.18.jar:6.1]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710) ~[tomcat-embed-core-11.0.18.jar:6.1]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1779) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2026-03-24T16:08:19.752+01:00 ERROR 63264 --- [o-auto-1-exec-4] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.hibernate.AssertionFailure: Entry for instance of 'com.adyen.demo.RandomTesting.entity.InternalPatient' has a null identifier (this can happen if the session is flushed after an exception occurs)] with root cause
+
+org.hibernate.AssertionFailure: Entry for instance of 'com.adyen.demo.RandomTesting.entity.InternalPatient' has a null identifier (this can happen if the session is flushed after an exception occurs)
+	at org.hibernate.event.internal.DefaultFlushEntityEventListener.checkId(DefaultFlushEntityEventListener.java:69) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.DefaultFlushEntityEventListener.getValues(DefaultFlushEntityEventListener.java:172) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.DefaultFlushEntityEventListener.onFlushEntity(DefaultFlushEntityEventListener.java:131) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:138) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.AbstractFlushingEventListener.flushEntities(AbstractFlushingEventListener.java:229) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.AbstractFlushingEventListener.flushEverythingToExecutions(AbstractFlushingEventListener.java:69) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.DefaultAutoFlushEventListener.onAutoFlush(DefaultAutoFlushEventListener.java:47) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:138) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionImpl.autoFlushIfRequired(SessionImpl.java:1440) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:126) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:427) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:355) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.SqmQueryImpl.doList(SqmQueryImpl.java:374) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:153) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResultOrNull(AbstractSelectionQuery.java:330) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:328) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:99) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:164) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:154) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:169) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:167) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:146) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:135) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:137) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:222) ~[spring-aop-7.0.5.jar:7.0.5]
+	at jdk.proxy3/jdk.proxy3.$Proxy164.findByFhirId(Unknown Source) ~[na:na]
+	at com.adyen.demo.RandomTesting.service.PatientService.syncPatientFromFhir(PatientService.java:115) ~[main/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.retry.annotation.AnnotationAwareRetryOperationsInterceptor.invoke(AnnotationAwareRetryOperationsInterceptor.java:165) ~[spring-retry-2.0.11.jar:na]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719) ~[spring-aop-7.0.5.jar:7.0.5]
+	at com.adyen.demo.RandomTesting.service.PatientService$$SpringCGLIB$$0.syncPatientFromFhir(<generated>) ~[main/:na]
+	at com.adyen.demo.RandomTesting.controller.PatientController.syncPatient(PatientController.java:61) ~[main/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:903) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649) ~[tomcat-embed-core-11.0.18.jar:6.1]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710) ~[tomcat-embed-core-11.0.18.jar:6.1]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1779) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2026-03-24T16:08:19.752+01:00 ERROR 63264 --- [o-auto-1-exec-6] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: org.hibernate.AssertionFailure: Entry for instance of 'com.adyen.demo.RandomTesting.entity.InternalPatient' has a null identifier (this can happen if the session is flushed after an exception occurs)] with root cause
+
+org.hibernate.AssertionFailure: Entry for instance of 'com.adyen.demo.RandomTesting.entity.InternalPatient' has a null identifier (this can happen if the session is flushed after an exception occurs)
+	at org.hibernate.event.internal.DefaultFlushEntityEventListener.checkId(DefaultFlushEntityEventListener.java:69) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.DefaultFlushEntityEventListener.getValues(DefaultFlushEntityEventListener.java:172) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.DefaultFlushEntityEventListener.onFlushEntity(DefaultFlushEntityEventListener.java:131) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:138) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.AbstractFlushingEventListener.flushEntities(AbstractFlushingEventListener.java:229) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.AbstractFlushingEventListener.flushEverythingToExecutions(AbstractFlushingEventListener.java:69) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.internal.DefaultAutoFlushEventListener.onAutoFlush(DefaultAutoFlushEventListener.java:47) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.event.service.internal.EventListenerGroupImpl.fireEventOnEachListener(EventListenerGroupImpl.java:138) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.internal.SessionImpl.autoFlushIfRequired(SessionImpl.java:1440) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.lambda$new$1(ConcreteSqmSelectQueryPlan.java:126) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.withCacheableSqmInterpretation(ConcreteSqmSelectQueryPlan.java:427) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.ConcreteSqmSelectQueryPlan.performList(ConcreteSqmSelectQueryPlan.java:355) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.sqm.internal.SqmQueryImpl.doList(SqmQueryImpl.java:374) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.spi.AbstractSelectionQuery.list(AbstractSelectionQuery.java:153) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.hibernate.query.spi.AbstractSelectionQuery.getSingleResultOrNull(AbstractSelectionQuery.java:330) ~[hibernate-core-7.2.4.Final.jar:7.2.4.Final]
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution$SingleEntityExecution.doExecute(JpaQueryExecution.java:328) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.jpa.repository.query.JpaQueryExecution.execute(JpaQueryExecution.java:99) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.doExecute(AbstractJpaQuery.java:164) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.jpa.repository.query.AbstractJpaQuery.execute(AbstractJpaQuery.java:154) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.doInvoke(RepositoryMethodInvoker.java:169) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.RepositoryMethodInvoker.invoke(RepositoryMethodInvoker.java:158) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.doInvoke(QueryExecutorMethodInterceptor.java:167) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.data.repository.core.support.QueryExecutorMethodInterceptor.invoke(QueryExecutorMethodInterceptor.java:146) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.data.projection.DefaultMethodInvokingMethodInterceptor.invoke(DefaultMethodInvokingMethodInterceptor.java:69) ~[spring-data-commons-4.0.3.jar:4.0.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.dao.support.PersistenceExceptionTranslationInterceptor.invoke(PersistenceExceptionTranslationInterceptor.java:135) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.data.jpa.repository.support.CrudMethodMetadataPostProcessor$CrudMethodMetadataPopulatingMethodInterceptor.invoke(CrudMethodMetadataPostProcessor.java:137) ~[spring-data-jpa-4.0.3.jar:4.0.3]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.JdkDynamicAopProxy.invoke(JdkDynamicAopProxy.java:222) ~[spring-aop-7.0.5.jar:7.0.5]
+	at jdk.proxy3/jdk.proxy3.$Proxy164.findByFhirId(Unknown Source) ~[na:na]
+	at com.adyen.demo.RandomTesting.service.PatientService.syncPatientFromFhir(PatientService.java:115) ~[main/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.aop.support.AopUtils.invokeJoinpointUsingReflection(AopUtils.java:359) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.invokeJoinpoint(ReflectiveMethodInvocation.java:190) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:158) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor$1.proceedWithInvocation(TransactionInterceptor.java:133) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionAspectSupport.invokeWithinTransaction(TransactionAspectSupport.java:371) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.transaction.interceptor.TransactionInterceptor.invoke(TransactionInterceptor.java:130) ~[spring-tx-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.retry.annotation.AnnotationAwareRetryOperationsInterceptor.invoke(AnnotationAwareRetryOperationsInterceptor.java:165) ~[spring-retry-2.0.11.jar:na]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:179) ~[spring-aop-7.0.5.jar:7.0.5]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:719) ~[spring-aop-7.0.5.jar:7.0.5]
+	at com.adyen.demo.RandomTesting.service.PatientService$$SpringCGLIB$$0.syncPatientFromFhir(<generated>) ~[main/:na]
+	at com.adyen.demo.RandomTesting.controller.PatientController.syncPatient(PatientController.java:61) ~[main/:na]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:252) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:184) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1000) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:903) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649) ~[tomcat-embed-core-11.0.18.jar:6.1]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874) ~[spring-webmvc-7.0.5.jar:7.0.5]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710) ~[tomcat-embed-core-11.0.18.jar:6.1]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.5.jar:7.0.5]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:492) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1779) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57) ~[tomcat-embed-core-11.0.18.jar:11.0.18]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: update internal_patient set age=?,fhir_id=?,name=?,version=? where id=? and version=?
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select count(*) from internal_patient ip1_0
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: update internal_patient set version=? where id=? and version=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

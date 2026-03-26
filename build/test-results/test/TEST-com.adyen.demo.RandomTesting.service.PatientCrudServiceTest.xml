@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.adyen.demo.RandomTesting.service.PatientCrudServiceTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2026-03-24T15:08:28.528Z" hostname="Mac" time="0.106">
+  <properties/>
+  <testcase name="getAllPatients_emptyRepository_returnsEmptyList()" classname="com.adyen.demo.RandomTesting.service.PatientCrudServiceTest" time="0.091"/>
+  <testcase name="deletePatientByID_callsRepositoryDeleteById()" classname="com.adyen.demo.RandomTesting.service.PatientCrudServiceTest" time="0.006"/>
+  <testcase name="getPatientByID_notFound_returnsNull()" classname="com.adyen.demo.RandomTesting.service.PatientCrudServiceTest" time="0.003"/>
+  <testcase name="savePatient_delegatesToRepository()" classname="com.adyen.demo.RandomTesting.service.PatientCrudServiceTest" time="0.003"/>
+  <testcase name="getPatientByID_found_returnsPatient()" classname="com.adyen.demo.RandomTesting.service.PatientCrudServiceTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

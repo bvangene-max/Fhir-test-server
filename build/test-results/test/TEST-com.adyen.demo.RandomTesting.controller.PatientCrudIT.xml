@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.adyen.demo.RandomTesting.controller.PatientCrudIT" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-03-24T15:08:27.955Z" hostname="Mac" time="0.104">
+  <properties/>
+  <testcase name="getPatient_nonExistentId_returns404()" classname="com.adyen.demo.RandomTesting.controller.PatientCrudIT" time="0.013"/>
+  <testcase name="getAllPatients_includesSubCollectionFields()" classname="com.adyen.demo.RandomTesting.controller.PatientCrudIT" time="0.01"/>
+  <testcase name="createPatient_withoutIdInBody_returnsGeneratedId()" classname="com.adyen.demo.RandomTesting.controller.PatientCrudIT" time="0.009"/>
+  <testcase name="deletePatient_nonExistentId_returns2xx()" classname="com.adyen.demo.RandomTesting.controller.PatientCrudIT" time="0.004"/>
+  <testcase name="createPatient_fhirIdIsNullInResponse()" classname="com.adyen.demo.RandomTesting.controller.PatientCrudIT" time="0.005"/>
+  <testcase name="deletePatient_existingPatient_thenGetReturnsNull()" classname="com.adyen.demo.RandomTesting.controller.PatientCrudIT" time="0.008"/>
+  <testcase name="createPatient_withNullName_returns400()" classname="com.adyen.demo.RandomTesting.controller.PatientCrudIT" time="0.01"/>
+  <testcase name="getAllPatients_emptyDatabase_returnsEmptyList()" classname="com.adyen.demo.RandomTesting.controller.PatientCrudIT" time="0.003"/>
+  <testcase name="getPatient_returnsAllAddressFields()" classname="com.adyen.demo.RandomTesting.controller.PatientCrudIT" time="0.008"/>
+  <testcase name="getAllPatients_multiplePatients_returnsAll()" classname="com.adyen.demo.RandomTesting.controller.PatientCrudIT" time="0.01"/>
+  <testcase name="createAndRetrievePatient()" classname="com.adyen.demo.RandomTesting.controller.PatientCrudIT" time="0.006"/>
+  <system-out><![CDATA[2026-03-24T16:08:27.958+01:00  INFO 63264 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.adyen.demo.RandomTesting.controller.PatientCrudIT]: PatientCrudIT does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2026-03-24T16:08:27.960+01:00  INFO 63264 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.adyen.demo.DemoApplication for test class com.adyen.demo.RandomTesting.controller.PatientCrudIT
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+2026-03-24T16:08:28.028+01:00  WARN 63264 --- [o-auto-1-exec-8] .w.s.m.s.DefaultHandlerExceptionResolver : Resolved [org.springframework.web.bind.MethodArgumentNotValidException: Validation failed for argument [0] in public com.adyen.demo.RandomTesting.entity.InternalPatient com.adyen.demo.RandomTesting.controller.PatientController.createPatient(com.adyen.demo.RandomTesting.dto.PatientRequest): [Field error in object 'patientRequest' on field 'name': rejected value [null]; codes [NotBlank.patientRequest.name,NotBlank.name,NotBlank.java.lang.String,NotBlank]; arguments [org.springframework.context.support.DefaultMessageSourceResolvable: codes [patientRequest.name,name]; arguments []; default message [name]]; default message [must not be blank]] ]
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from patient_addresses where patient_id=?
+Hibernate: delete from patient_names where patient_id=?
+Hibernate: delete from patient_phone_numbers where patient_id=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: delete from internal_patient where id=? and version=?
+Hibernate: insert into internal_patient (age,fhir_id,name,version,id) values (?,?,?,?,default)
+Hibernate: insert into patient_addresses (patient_id,city,country,line,postal_code,use) values (?,?,?,?,?,?)
+Hibernate: insert into patient_names (patient_id,family,given,use) values (?,?,?,?)
+Hibernate: select ip1_0.id,ip1_0.age,ip1_0.fhir_id,ip1_0.name,ip1_0.version from internal_patient ip1_0 where ip1_0.id=?
+Hibernate: select a1_0.patient_id,a1_0.city,a1_0.country,a1_0.line,a1_0.postal_code,a1_0.use from patient_addresses a1_0 where a1_0.patient_id=?
+Hibernate: select n1_0.patient_id,n1_0.family,n1_0.given,n1_0.use from patient_names n1_0 where n1_0.patient_id=?
+Hibernate: select pn1_0.patient_id,pn1_0.system,pn1_0.use,pn1_0.phone_value from patient_phone_numbers pn1_0 where pn1_0.patient_id=?
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
